@@ -12,10 +12,9 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.config.Config.AutoConstants;
-import frc.robot.config.Config.DriveConstants;
-import frc.robot.config.Config.OIConstants;
+import frc.robot.config.Config;
 import frc.robot.subsystems.DriveSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -32,7 +31,7 @@ import java.util.List;
 public class RobotContainer {
 
     // The driver's controller
-    XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
+    Joystick driverStick = new Joystick(0);
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -47,10 +46,10 @@ public class RobotContainer {
                 // Turning is controlled by the X axis of the right stick.
                 new RunCommand(
                         () -> DriveSubsystem.getInstance().drive(
-                                m_driverController.getLeftY(),
-                                m_driverController.getLeftX(),
-                                m_driverController.getRightX(),
-                                false),
+                                driverStick.getRawAxis(Config.LEFT_CONTROL_STICK_Y),
+                                driverStick.getRawAxis(Config.LEFT_CONTROL_STICK_X),
+                                driverStick.getRawAxis(Config.RIGHT_CONTROL_STICK_X),
+                                true),
                         DriveSubsystem.getInstance()));
     }
 
@@ -74,10 +73,10 @@ public class RobotContainer {
     public Command getAutonomousCommand() {
         // Create config for trajectory
         TrajectoryConfig config = new TrajectoryConfig(
-                AutoConstants.kMaxSpeedMetersPerSecond,
-                AutoConstants.kMaxAccelerationMetersPerSecondSquared)
+                Config.kMaxAutoSpeed,
+                Config.kMaxAutoAcceleration)
                         // Add kinematics to ensure max speed is actually obeyed
-                        .setKinematics(DriveConstants.kDriveKinematics);
+                        .setKinematics(Config.kDriveKinematics);
 
         // An example trajectory to follow. All units in meters.
         Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
@@ -90,17 +89,17 @@ public class RobotContainer {
                 config);
 
         var thetaController = new ProfiledPIDController(
-                AutoConstants.kPThetaController, 0, 0, AutoConstants.kThetaControllerConstraints);
+                Config.kPThetaController, 0, 0, Config.kThetaControllerConstraints);
         thetaController.enableContinuousInput(-Math.PI, Math.PI);
 
         SwerveControllerCommand swerveControllerCommand = new SwerveControllerCommand(
                 exampleTrajectory,
                 DriveSubsystem.getInstance()::getPose, // Functional interface to feed supplier
-                DriveConstants.kDriveKinematics,
+                Config.kDriveKinematics,
 
                 // Position controllers
-                new PIDController(AutoConstants.kPXController, 0, 0),
-                new PIDController(AutoConstants.kPYController, 0, 0),
+                new PIDController(Config.kPXController, 0, 0),
+                new PIDController(Config.kPYController, 0, 0),
                 thetaController,
                 DriveSubsystem.getInstance()::setModuleStates,
                 DriveSubsystem.getInstance());

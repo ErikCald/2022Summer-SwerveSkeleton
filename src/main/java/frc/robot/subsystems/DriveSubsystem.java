@@ -14,7 +14,6 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.config.Config;
-import frc.robot.config.Config.DriveConstants;
 
 public class DriveSubsystem extends SubsystemBase {
     // Instance for singleton class
@@ -30,10 +29,10 @@ public class DriveSubsystem extends SubsystemBase {
     private final SwerveModule m_rearRight = new SwerveModule();
 
     // The gyro sensor
-    private final PigeonIMU m_pigeon = new PigeonIMU(Config.CAN_PIGEON); 
+    private final PigeonIMU m_pigeon = new PigeonIMU(Config.CAN_PIGEON);
 
     // Odometry class for tracking robot pose
-    SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(DriveConstants.kDriveKinematics, getHeadingRotation2d());
+    SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(Config.kDriveKinematics, getHeadingRotation2d());
 
     /** Get instance of singleton class */
     public static DriveSubsystem getInstance() {
@@ -86,12 +85,12 @@ public class DriveSubsystem extends SubsystemBase {
      */
     @SuppressWarnings("ParameterName")
     public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
-        var swerveModuleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(
+        var swerveModuleStates = Config.kDriveKinematics.toSwerveModuleStates(
                 fieldRelative
                         ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, getHeadingRotation2d())
                         : new ChassisSpeeds(xSpeed, ySpeed, rot));
         SwerveDriveKinematics.desaturateWheelSpeeds(
-                swerveModuleStates, DriveConstants.kMaxSpeedMetersPerSecond);
+                swerveModuleStates, Config.kMaxAttainableWheelSpeed);
         m_frontLeft.setDesiredState(swerveModuleStates[0]);
         m_frontRight.setDesiredState(swerveModuleStates[1]);
         m_rearLeft.setDesiredState(swerveModuleStates[2]);
@@ -105,7 +104,7 @@ public class DriveSubsystem extends SubsystemBase {
      */
     public void setModuleStates(SwerveModuleState[] desiredStates) {
         SwerveDriveKinematics.desaturateWheelSpeeds(
-                desiredStates, DriveConstants.kMaxSpeedMetersPerSecond);
+                desiredStates, Config.kMaxAttainableWheelSpeed);
         m_frontLeft.setDesiredState(desiredStates[0]);
         m_frontRight.setDesiredState(desiredStates[1]);
         m_rearLeft.setDesiredState(desiredStates[2]);
