@@ -31,28 +31,40 @@ public class SwerveModule {
      */
     public void setDesiredState(SwerveModuleState desiredState) {
         // Optimize the reference state to avoid spinning further than 90 degrees
-        SwerveModuleState state = SwerveModuleState.optimize(desiredState, getSteeringAngle());
-        Rotation2d angle = ContinousPIDSparkMax.calculate(state.angle, getSteeringAngle());
+        Rotation2d measuredAngle = getSteeringAngle();
+        SwerveModuleState state = SwerveModuleState.optimize(desiredState, measuredAngle);
+        Rotation2d angle = ContinousPIDSparkMax.calculate(state.angle, measuredAngle);
         double velocity = state.speedMetersPerSecond;
         
-        // Convert the angle to SparkMax units (Revolutions) and pass to position PID.
+        // Set the PositionConversionFactor ahead of time and then pass radians to position PID on steering SparkMax.
 
-        // Convert the velocity to SparkMax units (RPM) and pass to velocity PID.
+        // Set the VelocityConversionFactor ahead of time and then pass m/s to velocity PID on drive SparkMax.
     }
 
     public double getVelocity() {
+
+        // Read encoder velocity from drive SparkMax, set the VelocityConversionFactor ahead of time so it's in unit of m/s.
+
         return 0.0;
     }
 
     public Rotation2d getSteeringAngle() {
-        return Rotation2d.fromDegrees(0);
+
+        // Read encoder position from steering SparkMax, set the PositionConversionFactor ahead of time so it's in unit of radians.
+
+        return new Rotation2d(0);
     }
 
     public void updateSteeringFromLamprey() {
+        
+        // Read value from Lamprey and set internal Neo encoder for the steering SparkMax (but need to add an offset first)
 
     }
 
     public void stopMotors() {
+
+        // Call the stopMotors method (provided with all WPILib motor controller objects)
+
     }
 
 }
