@@ -14,6 +14,7 @@ import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.commands.ModuleAngleFromJoystick;
 import frc.robot.config.Config;
 import frc.robot.subsystems.DriveSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -41,16 +42,21 @@ public class RobotContainer {
         configureButtonBindings();
 
         // Configure default commands
+        // DriveSubsystem.getInstance().setDefaultCommand(
+        //         // The left stick controls translation of the robot.
+        //         // Turning is controlled by the X axis of the right stick.
+        //         new RunCommand(
+        //                 () -> DriveSubsystem.getInstance().drive(
+        //                         driverStick.getRawAxis(Config.LEFT_CONTROL_STICK_Y),
+        //                         driverStick.getRawAxis(Config.LEFT_CONTROL_STICK_X),
+        //                         driverStick.getRawAxis(Config.RIGHT_CONTROL_STICK_X),
+        //                         true),
+        //                 DriveSubsystem.getInstance()));
+
+        // SINGLE MODULE CONTROL, REMOVE WHEN SWITCHING TO 4 MODULES
         DriveSubsystem.getInstance().setDefaultCommand(
-                // The left stick controls translation of the robot.
-                // Turning is controlled by the X axis of the right stick.
-                new RunCommand(
-                        () -> DriveSubsystem.getInstance().drive(
-                                driverStick.getRawAxis(Config.LEFT_CONTROL_STICK_Y),
-                                driverStick.getRawAxis(Config.LEFT_CONTROL_STICK_X),
-                                driverStick.getRawAxis(Config.RIGHT_CONTROL_STICK_X),
-                                true),
-                        DriveSubsystem.getInstance()));
+                    new ModuleAngleFromJoystick(() -> driverStick.getRawAxis(Config.LEFT_CONTROL_STICK_X), 
+                                                () -> driverStick.getRawAxis(Config.LEFT_CONTROL_STICK_Y)));
     }
 
     /**

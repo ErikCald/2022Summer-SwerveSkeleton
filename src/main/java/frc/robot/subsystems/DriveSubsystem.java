@@ -20,13 +20,13 @@ public class DriveSubsystem extends SubsystemBase {
     private static DriveSubsystem instance;
 
     // Robot swerve modules
-    private final SwerveModule m_frontLeft = new SwerveModule();
+    public final SwerveModule m_frontLeft = new SwerveModule();  // CHANGE TO PRIVATE WHEN MOVING TO A 4 MODULE CHASSIS
 
-    private final SwerveModule m_rearLeft = new SwerveModule();
+    // private final SwerveModule m_rearLeft = new SwerveModule();
 
-    private final SwerveModule m_frontRight = new SwerveModule();
+    // private final SwerveModule m_frontRight = new SwerveModule();
 
-    private final SwerveModule m_rearRight = new SwerveModule();
+    // private final SwerveModule m_rearRight = new SwerveModule();
 
     // The gyro sensor
     private final PigeonIMU m_pigeon = new PigeonIMU(Config.CAN_PIGEON);
@@ -45,16 +45,16 @@ public class DriveSubsystem extends SubsystemBase {
     private DriveSubsystem() {
     }
 
-    @Override
-    public void periodic() {
-        // Update the odometry in the periodic block
-        m_odometry.update(
-                getHeadingRotation2d(),
-                m_frontLeft.getState(),
-                m_frontRight.getState(),
-                m_rearLeft.getState(),
-                m_rearRight.getState());
-    }
+    // @Override
+    // public void periodic() {
+    //     // Update the odometry in the periodic block
+    //     m_odometry.update(
+    //             getHeadingRotation2d(),
+    //             m_frontLeft.getState(),
+    //             m_frontRight.getState(),
+    //             m_rearLeft.getState(),
+    //             m_rearRight.getState());
+    // }
 
     /**
      * Returns the currently-estimated pose of the robot.
@@ -92,9 +92,9 @@ public class DriveSubsystem extends SubsystemBase {
         SwerveDriveKinematics.desaturateWheelSpeeds(
                 swerveModuleStates, Config.kMaxAttainableWheelSpeed);
         m_frontLeft.setDesiredState(swerveModuleStates[0]);
-        m_frontRight.setDesiredState(swerveModuleStates[1]);
-        m_rearLeft.setDesiredState(swerveModuleStates[2]);
-        m_rearRight.setDesiredState(swerveModuleStates[3]);
+    //     m_frontRight.setDesiredState(swerveModuleStates[1]);
+    //     m_rearLeft.setDesiredState(swerveModuleStates[2]);
+    //     m_rearRight.setDesiredState(swerveModuleStates[3]);
     }
 
     /**
@@ -106,9 +106,9 @@ public class DriveSubsystem extends SubsystemBase {
         SwerveDriveKinematics.desaturateWheelSpeeds(
                 desiredStates, Config.kMaxAttainableWheelSpeed);
         m_frontLeft.setDesiredState(desiredStates[0]);
-        m_frontRight.setDesiredState(desiredStates[1]);
-        m_rearLeft.setDesiredState(desiredStates[2]);
-        m_rearRight.setDesiredState(desiredStates[3]);
+        // m_frontRight.setDesiredState(desiredStates[1]);
+        // m_rearLeft.setDesiredState(desiredStates[2]);
+        // m_rearRight.setDesiredState(desiredStates[3]);
     }
 
     /**
@@ -131,8 +131,8 @@ public class DriveSubsystem extends SubsystemBase {
 
     public void resetEncodersFromLamprey() {
         m_frontLeft.updateSteeringFromLamprey();
-        m_frontRight.updateSteeringFromLamprey();
-        m_rearLeft.updateSteeringFromLamprey();
-        m_rearRight.updateSteeringFromLamprey();
+        // m_frontRight.updateSteeringFromLamprey();
+        // m_rearLeft.updateSteeringFromLamprey();
+        // m_rearRight.updateSteeringFromLamprey();
     }
 }
