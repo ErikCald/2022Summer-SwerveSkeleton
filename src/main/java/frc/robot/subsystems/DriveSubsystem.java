@@ -85,10 +85,12 @@ public class DriveSubsystem extends SubsystemBase {
      */
     @SuppressWarnings("ParameterName")
     public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
-        var swerveModuleStates = Config.kDriveKinematics.toSwerveModuleStates(
-                fieldRelative
-                        ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, getHeadingRotation2d())
-                        : new ChassisSpeeds(xSpeed, ySpeed, rot));
+        SwerveModuleState[] swerveModuleStates;
+        if (fieldRelative) {
+            swerveModuleStates = Config.kDriveKinematics.toSwerveModuleStates(ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, getHeadingRotation2d()));
+        } else {
+            swerveModuleStates = Config.kDriveKinematics.toSwerveModuleStates(new ChassisSpeeds(xSpeed, ySpeed, rot));
+        }
         SwerveDriveKinematics.desaturateWheelSpeeds(
                 swerveModuleStates, Config.kMaxAttainableWheelSpeed);
         m_frontLeft.setDesiredState(swerveModuleStates[0]);
