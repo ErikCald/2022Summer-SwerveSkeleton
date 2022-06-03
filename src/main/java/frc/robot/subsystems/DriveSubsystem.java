@@ -20,13 +20,13 @@ public class DriveSubsystem extends SubsystemBase {
     private static DriveSubsystem instance;
 
     // Robot swerve modules
-    private final SwerveModule m_frontLeft = new SwerveModule();
+    private final SwerveModule m_frontLeft = new SwerveModule(/** ADD PARAMETERS HERE */);
 
-    private final SwerveModule m_rearLeft = new SwerveModule();
+    private final SwerveModule m_rearLeft = new SwerveModule(/** ADD PARAMETERS HERE */);
 
-    private final SwerveModule m_frontRight = new SwerveModule();
+    private final SwerveModule m_frontRight = new SwerveModule(/** ADD PARAMETERS HERE */);
 
-    private final SwerveModule m_rearRight = new SwerveModule();
+    private final SwerveModule m_rearRight = new SwerveModule(/** ADD PARAMETERS HERE */);
 
     // The gyro sensor
     private final PigeonIMU m_pigeon = new PigeonIMU(Config.CAN_PIGEON);
@@ -91,8 +91,7 @@ public class DriveSubsystem extends SubsystemBase {
         } else {
             swerveModuleStates = Config.kDriveKinematics.toSwerveModuleStates(new ChassisSpeeds(xSpeed, ySpeed, rot));
         }
-        SwerveDriveKinematics.desaturateWheelSpeeds(
-                swerveModuleStates, Config.kMaxAttainableWheelSpeed);
+        SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, Config.kMaxAttainableWheelSpeed);
         m_frontLeft.setDesiredState(swerveModuleStates[0]);
         m_frontRight.setDesiredState(swerveModuleStates[1]);
         m_rearLeft.setDesiredState(swerveModuleStates[2]);
