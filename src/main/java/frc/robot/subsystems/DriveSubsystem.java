@@ -20,13 +20,13 @@ public class DriveSubsystem extends SubsystemBase {
     private static DriveSubsystem instance;
 
     // Robot swerve modules
-    private final SwerveModule m_frontLeft = new SwerveModule(/** ADD PARAMETERS HERE */);
+    private final SwerveModule m_frontLeft = new SwerveModule(Config.CANID_FRONT_LEFT_DRIVE, Config.CANID_FRONT_LEFT_STEERING, Config.INVERTED_FRONT_LEFT_DRIVE, Config.INVERTED_FRONT_LEFT_STEERING);
 
-    private final SwerveModule m_rearLeft = new SwerveModule(/** ADD PARAMETERS HERE */);
+    private final SwerveModule m_rearLeft = new SwerveModule(Config.CANID_REAR_LEFT_DRIVE, Config.CANID_REAR_LEFT_STEERING, Config.INVERTED_REAR_LEFT_DRIVE, Config.INVERTED_REAR_LEFT_STEERING);
 
-    private final SwerveModule m_frontRight = new SwerveModule(/** ADD PARAMETERS HERE */);
+    private final SwerveModule m_frontRight = new SwerveModule(Config.CANID_FRONT_RIGHT_DRIVE, Config.CANID_FRONT_RIGHT_STEERING, Config.INVERTED_FRONT_RIGHT_DRIVE, Config.INVERTED_FRONT_RIGHT_STEERING);
 
-    private final SwerveModule m_rearRight = new SwerveModule(/** ADD PARAMETERS HERE */);
+    private final SwerveModule m_rearRight = new SwerveModule(Config.CANID_REAR_RIGHT_DRIVE, Config.CANID_REAR_RIGHT_STEERING, Config.INVERTED_REAR_RIGHT_DRIVE, Config.INVERTED_REAR_RIGHT_STEERING);
 
     // The gyro sensor
     private final PigeonIMU m_pigeon = new PigeonIMU(Config.CAN_PIGEON);

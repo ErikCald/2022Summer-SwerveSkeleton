@@ -4,20 +4,66 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxPIDController;
+import com.revrobotics.CANSparkMax.ControlType;
+import com.revrobotics.CANSparkMax.IdleMode;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import frc.robot.config.Config;
 
 public class SwerveModule {
 
-    // CODE: Prepare 2 variables for both SparkMaxs, use the object called CANSparkMax
+    CANSparkMax driveMotor;
+    CANSparkMax steeringMotor;
+
+    SparkMaxPIDController drivePIDController;
+    SparkMaxPIDController steeringPIDController;
+
+    RelativeEncoder driveEncoder;
+    RelativeEncoder steeringEncoder;
 
     /**
      * Constructs a SwerveModule.
      */
-    public SwerveModule(/** Add parameters here for CONSTANTS that are specific to each module */) {
+    public SwerveModule(int driveCANID, int steerCANID, boolean driveInverted, boolean steerInverted) {
 
-        // CODE: Construct both CANSparkMax objects and set all the nessecary settings (get CONSTANTS from Config or from the parameters of the constructor)
+        // Drive Motor
+        driveMotor = new CANSparkMax(driveCANID, MotorType.kBrushless);
+        driveMotor.restoreFactoryDefaults();
+        driveMotor.setIdleMode(IdleMode.kCoast);
+        driveMotor.setInverted(driveInverted);
+        driveMotor.setSmartCurrentLimit(Config.CURRENT_LIMIT_DRIVE);
 
+        driveEncoder = driveMotor.getEncoder();
+        driveEncoder.setVelocityConversionFactor(Config.DRIVE_VEL_CONVERSION);
+
+        drivePIDController = driveMotor.getPIDController();
+        drivePIDController.setFF(Config.DRIVE_FF);
+        drivePIDController.setP(Config.DRIVE_P);
+        drivePIDController.setI(Config.DRIVE_I);
+        drivePIDController.setD(Config.DRIVE_D);
+        drivePIDController.setIZone(Config.DRIVE_IZONE);
+
+        // Steering motor
+        steeringMotor = new CANSparkMax(steerCANID, MotorType.kBrushless);
+        steeringMotor.restoreFactoryDefaults();
+        steeringMotor.setIdleMode(IdleMode.kCoast);
+        steeringMotor.setInverted(steerInverted);
+        steeringMotor.setSmartCurrentLimit(Config.CURRENT_LIMIT_STEERING);
+
+        steeringEncoder = steeringMotor.getEncoder();
+        steeringEncoder.setPositionConversionFactor(Config.STEERING_POS_CONVERSION);
+
+        steeringPIDController = driveMotor.getPIDController();
+        steeringPIDController.setFF(Config.STEERING_FF);
+        steeringPIDController.setP(Config.STEERING_P);
+        steeringPIDController.setI(Config.STEERING_I);
+        steeringPIDController.setD(Config.STEERING_D);
+        steeringPIDController.setIZone(Config.STEERING_IZONE);
     }
 
     /**
@@ -41,11 +87,8 @@ public class SwerveModule {
         double velocity = state.speedMetersPerSecond;
         Rotation2d angle = ContinousPIDSparkMax.calculate(state.angle, measuredAngle);
         
-        
-        // CODE: Pass the velocity (which is in meters per second) to velocity PID on drive SparkMax. (VelocityConversionFactor set so SparkMax wants m/s)
-
-        // CODE: Pass the angle (which is in radians) to position PID on steering SparkMax. (PositionConversionFactor set so SparkMax wants radians)
-
+        drivePIDController.setReference(velocity, ControlType.kVelocity);
+        steeringPIDController.setReference(angle.getRadians(), ControlType.kPosition);
     }
 
     /**
@@ -54,10 +97,7 @@ public class SwerveModule {
      * @return meters per second of the wheel
      */
     public double getVelocity() {
-
-        // CODE: Read encoder velocity from drive SparkMax and return m/s. (VelocityConversionFactor set so SparkMax returns m/s))
-
-        return 0.0;
+        return driveEncoder.getVelocity();
     }
 
     /**
@@ -66,10 +106,7 @@ public class SwerveModule {
      * @return angle of the wheel
      */
     public Rotation2d getSteeringAngle() {
-
-        // CODE: Read encoder position from steering SparkMax. (PositionConversionFactor set so SparkMax returns radians)
-
-        return new Rotation2d(0);
+        return new Rotation2d(steeringEncoder.getPosition());
     }
 
     /**
@@ -87,9 +124,8 @@ public class SwerveModule {
      * Standard stop motors method for every subsystem.
      */
     public void stopMotors() {
-
-        // CODE: Call the stopMotors method in the CANSparkMax (provided with all WPILib motor controller objects)
-
+        driveMotor.stopMotor();
+        steeringMotor.stopMotor();
     }
 
 }

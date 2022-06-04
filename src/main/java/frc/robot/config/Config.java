@@ -40,14 +40,33 @@ public final class Config {
     public static final boolean INVERTED_FRONT_LEFT_STEERING = false;
     public static final boolean INVERTED_REAR_LEFT_STEERING = false;
     public static final boolean INVERTED_FRONT_RIGHT_STEERING = false;
-    public static final boolean INVERTED_REAR_RIGHT_STEERING =  false;   
+    public static final boolean INVERTED_REAR_RIGHT_STEERING = false;
+
+    public static final int CURRENT_LIMIT_DRIVE = 80;
+    public static final int CURRENT_LIMIT_STEERING = 40;
+
+    public static final double DRIVE_VEL_CONVERSION = 0.1016 * Math.PI / (60 * 7.615);
+    public static final double STEERING_POS_CONVERSION = 2 * Math.PI / 8.0;
+
+    public static final double DRIVE_FF = 0;
+    public static final double DRIVE_P = 0;
+    public static final double DRIVE_I = 0;
+    public static final double DRIVE_D = 0;
+    public static final double DRIVE_IZONE = 0;
+
+    public static final double STEERING_FF = 0;
+    public static final double STEERING_P = 0;
+    public static final double STEERING_I = 0;
+    public static final double STEERING_D = 0;
+    public static final double STEERING_IZONE = 0;
+    
 
     // Distance between centers of right and left wheels on robot
     public static final double kTrackWidth = 0.5;
-    
+
     // Distance between front and back wheels on robot
     public static final double kWheelBase = 0.7;
-    
+
     public static final SwerveDriveKinematics kDriveKinematics = new SwerveDriveKinematics(
             new Translation2d(kWheelBase / 2, kTrackWidth / 2),
             new Translation2d(kWheelBase / 2, -kTrackWidth / 2),
@@ -61,19 +80,19 @@ public final class Config {
     public static final double kMaxAttainableWheelSpeed = 3.0;
 
     public static final double kWheelDiameterMeters = 0.1016;
-    
+
     /* Joystick Constants */
     public static int LEFT_CONTROL_STICK_Y = 1;
     public static int LEFT_CONTROL_STICK_X = 0;
-    
+
     public static int RIGHT_CONTROL_STICK_Y = 5;
     public static int RIGHT_CONTROL_STICK_X = 4;
-    
+
     /** Auto Constants */
     public static final double kMaxAutoSpeed = 3; // m/s
     public static final double kMaxAutoAcceleration = 3; // m/s/s
-    public static final double kMaxAutoAngularSpeed = Math.PI;  // rad/s
-    public static final double kMaxAutoAngularAcceleration = Math.PI;  // rad/s/s
+    public static final double kMaxAutoAngularSpeed = Math.PI; // rad/s
+    public static final double kMaxAutoAngularAcceleration = Math.PI; // rad/s/s
 
     public static final double kPXController = 1;
     public static final double kPYController = 1;
@@ -81,6 +100,6 @@ public final class Config {
 
     // Constraint for the motion profiled robot angle controller
     public static final TrapezoidProfile.Constraints kThetaControllerConstraints = new TrapezoidProfile.Constraints(
-        kMaxAutoAngularSpeed, kMaxAutoAngularAcceleration);
-    
+            kMaxAutoAngularSpeed, kMaxAutoAngularAcceleration);
+
 }
