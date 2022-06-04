@@ -130,6 +130,16 @@ public class DriveSubsystem extends SubsystemBase {
         return Rotation2d.fromDegrees(getHeading());
     }
 
+    /**
+     * Standard stop motors method for every subsystem.
+     */
+    public void stopMotors() {
+        m_frontLeft.stopMotors();
+        m_rearLeft.stopMotors();
+        m_frontRight.stopMotors();
+        m_rearRight.stopMotors();
+    }
+
     public void resetEncodersFromLamprey() {
         m_frontLeft.updateSteeringFromLamprey();
         m_frontRight.updateSteeringFromLamprey();
