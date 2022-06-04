@@ -135,9 +135,9 @@ public class DriveSubsystem extends SubsystemBase {
      */
     public void stopMotors() {
         m_frontLeft.stopMotors();
-        m_rearLeft.stopMotors();
-        m_frontRight.stopMotors();
-        m_rearRight.stopMotors();
+        // m_rearLeft.stopMotors();
+        // m_frontRight.stopMotors();
+        // m_rearRight.stopMotors();
     }
 
     public void resetEncodersFromLamprey() {
