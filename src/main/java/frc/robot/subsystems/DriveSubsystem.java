@@ -20,7 +20,7 @@ public class DriveSubsystem extends SubsystemBase {
     private static DriveSubsystem instance;
 
     // Robot swerve modules
-    public final SwerveModule m_frontLeft = new SwerveModule(/** ADD PARAMETERS HERE */); // // CHANGE TO PRIVATE WHEN MOVING TO A 4 MODULE CHASSIS
+    private final SwerveModule m_frontLeft = new SwerveModule(/** ADD PARAMETERS HERE */);
 
     // private final SwerveModule m_rearLeft = new SwerveModule(/** ADD PARAMETERS HERE */);
 

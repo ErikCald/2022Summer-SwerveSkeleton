@@ -43,7 +43,7 @@ public class ModuleAngleFromJoystick extends CommandBase {
 
             SwerveModuleState state = new SwerveModuleState(velocity, angle);
 
-            DriveSubsystem.getInstance().m_frontLeft.setDesiredState(state); 
+            DriveSubsystem.getInstance().setModuleStates(new SwerveModuleState[]{state}); 
         }
 
     }
@@ -51,7 +51,7 @@ public class ModuleAngleFromJoystick extends CommandBase {
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
-        DriveSubsystem.getInstance().m_frontLeft.stopMotors();
+        DriveSubsystem.getInstance().stopMotors();
     }
 
     // Returns true when the command should end.
