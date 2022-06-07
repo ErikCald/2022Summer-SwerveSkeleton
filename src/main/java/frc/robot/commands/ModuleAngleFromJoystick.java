@@ -38,6 +38,9 @@ public class ModuleAngleFromJoystick extends CommandBase {
         if (Math.abs(x) < 0.3 && Math.abs(y) < 0.3) {
             // Do nothing
         } else {
+            x = Math.signum(x) * (Math.abs(x) - 0.3) / 0.7;
+            y = Math.signum(y) * (Math.abs(y) - 0.3) / 0.7;
+
             double velocity = Math.sqrt(Math.pow(x,2) + Math.pow(y,2)); 
             Rotation2d angle = new Rotation2d(x, y); 
 

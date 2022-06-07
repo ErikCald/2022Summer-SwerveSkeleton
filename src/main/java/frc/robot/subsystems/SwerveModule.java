@@ -14,7 +14,7 @@ public class SwerveModule {
     /**
      * Constructs a SwerveModule.
      */
-    public SwerveModule(/** Add parameters here for CONSTANTS that are specific to each module */) {
+    public SwerveModule(/** CODE: Add parameters here for CONSTANTS that are specific to each module */) {
 
         // CODE: Construct both CANSparkMax objects and set all the nessecary settings (get CONSTANTS from Config or from the parameters of the constructor)
 
@@ -63,11 +63,12 @@ public class SwerveModule {
     /**
      * Returns the angle the wheel is pointing in a Rotation2d.
      * 
-     * @return angle of the wheel
+     * @return angle of the wheel as a Rotation2d
      */
     public Rotation2d getSteeringAngle() {
 
-        // CODE: Read encoder position from steering SparkMax. (PositionConversionFactor set so SparkMax returns radians)
+        // CODE: Read encoder position from steering SparkMax and return Rotation2d.
+        // The PositionConversionFactor is set so SparkMax returns radians, the default constructor of Rotation2d wants radians.
 
         return new Rotation2d(0);
     }
@@ -91,5 +92,4 @@ public class SwerveModule {
         // CODE: Call the stopMotors method in the CANSparkMax (provided with all WPILib motor controller objects)
 
     }
-
 }
